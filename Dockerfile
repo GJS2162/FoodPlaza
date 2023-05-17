@@ -1,13 +1,36 @@
+# FROM python:3
+
+# WORKDIR /data
+
+# RUN pip install django==3.2
+
+# COPY . .
+
+# RUN python manage.py migrate
+
+# EXPOSE 8001
+
+# CMD ["python","manage.py","runserver","0.0.0.0:8001"]
+
 FROM python:3
+WORKDIR /app
+# Copy the requirements file to the container
+COPY requirements.txt .
 
-WORKDIR /data
+# Install project dependencies
+RUN pip install -r requirements.txt
 
-RUN pip install django==3.2
-
+# Copy the project files to the container
 COPY . .
 
-RUN python manage.py migrate
+# Set environment variables (if required)
+# ENV DJANGO_SETTINGS_MODULE=myproject.settings
 
-EXPOSE 8000
+# Run database migrations (if required)
+# RUN python manage.py migrate
 
-CMD ["python","manage.py","runserver","0.0.0.0:8000"]
+# Expose the port on which Django runs (default is 8000)
+EXPOSE 8001
+
+# Start the Django development server
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8001"]
